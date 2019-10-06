@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^webstat$', Webstat),
     url(r'^index$', Index),
     url(r'^$', Index),
-    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/img/favicon.ico', permanent=True)),
     #url(r'^.*$', Any_Page),
 
 ]
