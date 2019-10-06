@@ -37,7 +37,7 @@ STATIC_ROOT.replace('\\','/')
 SECRET_KEY = '1v6zfy59tbx08+x$cp-f!t2d#xr4+ema(0$k!5by%h^#(+*#df'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '192.168.1.12', 'ruthelp.ru', 'www.ruthelp.ru']
 
