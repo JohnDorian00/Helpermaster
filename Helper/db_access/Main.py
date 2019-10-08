@@ -42,22 +42,24 @@ def Get_Data():
     workbook = Workbook('db_accel.xlsx')
 
     #count = len(ConcessionMass)
+    worksheet = []
 
-
-    #for x in ConcessionMass:
+    for x in range( len(ConcessionMass) ):
         #worksheet[i] = workbook.add_worksheet()
+        worksheet.apend( workbook.add_worksheet( ConcessionMass(x) ) )
 
 
-    worksheet = workbook.add_worksheet()
+    #worksheet = workbook.add_worksheet()
     #c.execute("select * from comments")
 
-    #c.execute("select name from comments")
     mysel = c.execute("select * from comments")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
-            worksheet.write(i, j-1, row[j])
+            worksheet[1].write(i, j-1, row[j])
     workbook.close()
     conn.close()
+
+
     File_Path = os.path.abspath('db_accel.xlsx')
     fp = open(File_Path, "rb")
     response = HttpResponse(fp.read())
