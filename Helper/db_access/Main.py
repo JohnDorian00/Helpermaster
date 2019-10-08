@@ -58,18 +58,20 @@ def Get_Data():
     workbook = Workbook('db_accel.xlsx')
     worksheet = []
 
-    # Создание листов по кол-ву элементов (причин) и их заполнение из бд
+    # Создание листов по кол-ву элементов (причин)
     for x in range(len(ConcessionMass)):
         worksheet.append(workbook.add_worksheet(SheetName[x]))
-
-        # Проверка на совпадение с причиной
         reason = ConcessionMass[x]
-        sql = c.execute("SELECT * FROM comments WHERE typeconcession = '"+reason+"'")
+        sql = c.execute("SELECT * FROM comments WHERE typeconcession = '" + reason + "'")
 
-        # Добавление записей на лист
         for i, row in enumerate(sql):
-            for j, value in enumerate(row):
-                worksheet[x].write(i, j-1, row[j])
+            fio = row[1] + ' ' + row[2] + ' ' + row[3]
+            for j in range(4, len(row)-1):
+                # for j, value in enumerate(row):
+                worksheet[x].write(i, 0, fio)
+                worksheet[x].write(i, j-3, row[j])
+
+    # mysel = c.execute("SELECT surname, name, lname, group2, number, typeconcession, gender, confirm FROM comments")
 
     conn.close()
     workbook.close()
