@@ -7,7 +7,20 @@ from django.http import HttpResponse
 from xlsxwriter import Workbook
 
 GenderMass = ["женский", "мужской"]
-ConcessionMass = ["студент-сирота", "cтудент-инвалид", "cтудент, имеющий детей", "cтудент из многодетной семьи", "cтудент-участник военных действий", "cтудент-чернобылец", "cтудент, имеющий родителей-инвалидов, родителей-пенсионеров", "cтудент из неполной семьи", "cтудент из малоимущей семьи", "cтудент, находящийся на диспансерном учёте с хроническими заболеваниями", "студент, проживающий в общежитии"]
+
+ConcessionMass = ["студент-сирота", "cтудент-инвалид", "cтудент, имеющий детей", "cтудент из многодетной семьи",
+                  "cтудент-участник военных действий", "cтудент-чернобылец",
+                  "cтудент, имеющий родителей-инвалидов, родителей-пенсионеров", "cтудент из неполной семьи",
+                  "cтудент из малоимущей семьи",
+                  "cтудент, находящийся на диспансерном учёте с хроническими заболеваниями",
+                  "студент, проживающий в общежитии"]
+
+SheetName = ["Сироты", "Инвалиды", "Имеющие детей", "Многодетные семьи",
+             "Участник военных действий", "Чернобыльцы",
+             "Родители инвалиды, пенсионеры", "Неполная семья",
+             "Малоимущая семья",
+             "Диспансерный учёт",
+             "Общага"]
 
 adr = Helper.settings.BASE_DIR + "/Helper/db_access/db_s.db"
 # ТОЛЬКО ДЛЯ REG.RU
@@ -37,27 +50,29 @@ def Insert_Data(gender, group, surname, name, lastname, number, typeconcession, 
 
 # Функция генерации экселя по данным из БД
 def Get_Data():
+    # Подключение БД
     conn = sqlite3.connect(adr)
     c = conn.cursor()
-    workbook = Workbook('db_accel.xlsx')
 
-    #count = len(ConcessionMass)
+    # Создание книги
+    workbook = Workbook('db_accel.xlsx')
     worksheet = []
 
-    for x in range( len(ConcessionMass) ):
-        #worksheet[i] = workbook.add_worksheet()
-        worksheet.apend( workbook.add_worksheet( ConcessionMass(x) ) )
+    # Создание листов по кол-ву элементов (причин) и их заполнение из бд
+    for x in range(len(ConcessionMass)):
+        worksheet.append(workbook.add_worksheet(SheetName[x]))
 
+        # Проверка на совпадение с причиной
+        reason = ConcessionMass[x]
+        sql = c.execute("SELECT * FROM comments WHERE typeconcession = '"+reason+"'")
 
-    #worksheet = workbook.add_worksheet()
-    #c.execute("select * from comments")
+        # Добавление записей на лист
+        for i, row in enumerate(sql):
+            for j, value in enumerate(row):
+                worksheet[x].write(i, j-1, row[j])
 
-    mysel = c.execute("select * from comments")
-    for i, row in enumerate(mysel):
-        for j, value in enumerate(row):
-            worksheet[1].write(i, j-1, row[j])
-    workbook.close()
     conn.close()
+    workbook.close()
 
 
     File_Path = os.path.abspath('db_accel.xlsx')
