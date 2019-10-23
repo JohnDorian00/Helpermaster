@@ -1,3 +1,3 @@
 # Helpermaster
  
-<a href="ruthelp.ru"> ruthelp.ru </a>
+<a href="https://ruthelp.ru"> ruthelp.ru </a>
