@@ -9,8 +9,8 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from key import Private_Key
-import design
+from Client import design
+from Client.key import Private_Key
 
 
 def thread(my_func):
